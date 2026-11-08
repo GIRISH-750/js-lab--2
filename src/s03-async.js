@@ -20,5 +20,5 @@ return results;
 // The same, but start them ALL AT ONCE and wait for all of them.
 // Resolve with their results in the original order. Use Promise.all.
 export function allAtOnce(tasks) {
-  throw new Error("TODO");
+ return Promise.all(tasks.map((task) => task()));
 }
