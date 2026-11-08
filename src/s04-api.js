@@ -30,10 +30,16 @@ return query ? "/api/courses?" + query : "/api/courses";
 //   false, throw new Error(`HTTP ${res.status}`).
 // - If fetch itself rejects (no network), let that error propagate.
 export async function getJSON(url, fetchFn = fetch) {
-  throw new Error("TODO");
+  const res = await fetchFn(url);
+
+if (!res.ok) {
+  throw new Error(`HTTP ${res.status}`);
+}
+
+return res.json();
 }
 
 // The courses matching some filters: build the URL, then getJSON it.
 export function fetchCourses(filters, fetchFn = fetch) {
-  throw new Error("TODO");
+ return getJSON(buildCoursesUrl(filters), fetchFn);
 }
