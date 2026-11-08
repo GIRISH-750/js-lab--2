@@ -3,7 +3,7 @@
 // A promise that resolves (with no value) after `ms` milliseconds.
 // Hint: new Promise((resolve) => setTimeout(resolve, ms))
 export function wait(ms) {
-  throw new Error("TODO");
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // `tasks` is an array of functions, each returning a promise.
