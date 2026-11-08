@@ -10,7 +10,11 @@ export function wait(ms) {
 // Run them ONE AFTER ANOTHER — start the next only when the previous has finished —
 // and resolve with their results, in order. Use await in a loop.
 export async function inOrder(tasks) {
-  throw new Error("TODO");
+  const results = [];
+for (const task of tasks) {
+  results.push(await task());
+}
+return results;
 }
 
 // The same, but start them ALL AT ONCE and wait for all of them.
