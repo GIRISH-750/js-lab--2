@@ -1,20 +1,72 @@
-// Section 09 — Out-of-order responses
+/*
+ * Section 09 — Out-of-order responses
+ *
+ * Returns a function track(promise).
+ * Every call gets a number.
+ * Only the MOST RECENT call's result counts.
+ *
+ * result:
+ * { stale: false, value }  → latest request
+ * { stale: true }          → older request
+ *
+ * If promise rejects:
+ * - Latest request → rethrow error
+ * - Older request → return { stale: true }
+ */
 
-// Returns a function `track(promise)`. Every call to track gets a number;
-// only the MOST RECENT call's result counts.
-//   const track = createLatestOnly();
-//   const result = await track(fetchCourses(...));
-//   result → { stale: false, value }  if this was the latest call when it finished
-//          → { stale: true }          if a newer call started meanwhile
-// If the promise rejects: rethrow the error if it's the latest call,
-// otherwise resolve { stale: true } (nobody cares about an old failure).
 export function createLatestOnly() {
-  throw new Error("TODO");
+  let latest = 0;
+
+  return async (promise) => {
+    latest++;
+
+    const mine = latest;
+
+    try {
+      const value = await promise;
+
+      if (mine === latest) {
+        return {
+          stale: false,
+          value,
+        };
+      }
+
+      return {
+        stale: true,
+      };
+
+    } catch (error) {
+
+      if (mine === latest) {
+        throw error;
+      }
+
+      return {
+        stale: true,
+      };
+    }
+  };
 }
 
-// STRETCH — debounce(fn, ms): returns a function that waits until it has NOT
-// been called for `ms` milliseconds, then calls fn once, with the LAST arguments.
-// Typing "learn" fast should search once, for "learn" — not five times.
+/*
+ * STRETCH — debounce(fn, ms)
+ *
+ * Waits until fn has NOT been called for ms milliseconds.
+ * Then calls fn once with the LAST arguments.
+ *
+ * Example:
+ * Typing "learn" quickly → searches only for "learn".
+ */
+
 export function debounce(fn, ms) {
-  throw new Error("TODO");
+  let timer;
+
+  return (...args) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      fn(...args);
+    }, ms);
+  };
 }
