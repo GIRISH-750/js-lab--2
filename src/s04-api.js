@@ -7,7 +7,21 @@
 //       → a URL whose department is exactly "Data Science & AI" (the & must be encoded!)
 // Leave out any filter that is missing or blank. Use URLSearchParams.
 export function buildCoursesUrl({ department = "", q = "" } = {}) {
-  throw new Error("TODO");
+  const params = new URLSearchParams();
+
+if (department.trim()) {
+  params.set("department", department.trim());
+}
+
+// 1. Do the same thing for q
+if (q.trim()) {
+  params.set("q", q.trim());
+}
+
+const query = params.toString();
+
+// 2. Return URL based on whether query exists
+return query ? "/api/courses?" + query : "/api/courses";
 }
 
 // GET a URL and return the parsed JSON body.
